@@ -12,7 +12,7 @@ public class Enrollment implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
 
     @ManyToOne

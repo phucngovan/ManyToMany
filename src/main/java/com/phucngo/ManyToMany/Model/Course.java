@@ -1,5 +1,7 @@
 package com.phucngo.ManyToMany.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -13,7 +15,7 @@ public class Course {
 
 //    @ManyToMany(mappedBy ="courses")
 //    private Set<Student> students;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "course")
     private Set<Enrollment> enrollments;
 

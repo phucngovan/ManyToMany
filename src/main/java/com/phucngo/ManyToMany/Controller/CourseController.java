@@ -41,6 +41,7 @@ public class CourseController {
     public Course updateCourse(@PathVariable Integer courseId, @Valid @RequestBody Course courseRequest) {
         return courseRepository.findById(courseId).map(
                 course -> {
+                    course.setId(courseRequest.getId());
                     course.setName(courseRequest.getName());
 //                    course.setStudents(courseRequest.getStudents());
                     course.setEnrollments(courseRequest.getEnrollments());
