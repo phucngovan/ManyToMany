@@ -42,7 +42,8 @@ public class CourseController {
         return courseRepository.findById(courseId).map(
                 course -> {
                     course.setName(courseRequest.getName());
-                    course.setStudents(courseRequest.getStudents());
+//                    course.setStudents(courseRequest.getStudents());
+                    course.setEnrollments(courseRequest.getEnrollments());
                     return courseRepository.save(course);
                 }
         ).orElse(null);

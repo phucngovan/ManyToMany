@@ -53,7 +53,7 @@ public class StudentController {
         student.setId(studentForm.getId());
         student.setName(studentForm.getName());
         student.setPhone(studentForm.getPhone());
-        student.setCourses(studentForm.getCourses());
+        student.setEnrollments(studentForm.getEnrollments());
         Student updatedStudent = studentService.create(student);
         return ResponseEntity.ok(updatedStudent);
     }

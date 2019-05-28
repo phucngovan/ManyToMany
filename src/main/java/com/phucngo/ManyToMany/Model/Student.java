@@ -14,17 +14,19 @@ public class Student {
 
     private String phone;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "student_course", joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
-    private Set<Course> courses;
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "student_course", joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
+//    private Set<Course> courses;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Enrollment> enrollments;
 
     public Student() {
     }
 
-    public Student(String name, String phone, Set<Course> courses) {
+    public Student(String name, String phone, Set<Enrollment> enrollments) {
         this.name = name;
         this.phone = phone;
-        this.courses = courses;
+        this.enrollments = enrollments;
     }
 
     public int getId() {
@@ -51,11 +53,19 @@ public class Student {
         this.phone = phone;
     }
 
-    public Set<Course> getCourses() {
-        return courses;
+//    public Set<Course> getCourses() {
+//        return courses;
+//    }
+//
+//    public void setCourses(Set<Course> courses) {
+//        this.courses = courses;
+//    }
+
+    public Set<Enrollment> getEnrollments() {
+        return enrollments;
     }
 
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
+    public void setEnrollments(Set<Enrollment> enrollments) {
+        this.enrollments = enrollments;
     }
 }

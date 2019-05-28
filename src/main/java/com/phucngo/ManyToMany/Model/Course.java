@@ -11,15 +11,18 @@ public class Course {
     private int id;
     private String name;
 
-    @ManyToMany(mappedBy ="courses")
-    private Set<Student> students;
+//    @ManyToMany(mappedBy ="courses")
+//    private Set<Student> students;
+
+    @OneToMany(mappedBy = "course")
+    private Set<Enrollment> enrollments;
 
     public Course() {
     }
 
-    public Course(String name, Set<Student> students) {
+    public Course(String name, Set<Enrollment> enrollments) {
         this.name = name;
-        this.students = students;
+        this.enrollments = enrollments;
     }
 
     public int getId() {
@@ -38,11 +41,19 @@ public class Course {
         this.name = name;
     }
 
-    public Set<Student> getStudents() {
-        return students;
+//    public Set<Student> getStudents() {
+//        return students;
+//    }
+//
+//    public void setStudents(Set<Student> students) {
+//        this.students = students;
+//    }
+
+    public Set<Enrollment> getEnrollments() {
+        return enrollments;
     }
 
-    public void setStudents(Set<Student> students) {
-        this.students = students;
+    public void setEnrollments(Set<Enrollment> enrollments) {
+        this.enrollments = enrollments;
     }
 }
