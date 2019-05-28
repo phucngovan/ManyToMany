@@ -37,7 +37,7 @@ public class CourseController {
     }
 
 
-    @PutMapping("/courses/{courseId}")
+    @PatchMapping("/courses/{courseId}")
     public Course updateCourse(@PathVariable Integer courseId, @Valid @RequestBody Course courseRequest) {
         return courseRepository.findById(courseId).map(
                 course -> {
