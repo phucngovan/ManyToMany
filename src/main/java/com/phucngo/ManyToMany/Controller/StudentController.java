@@ -13,60 +13,47 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class StudentController {
-    public static Logger logger = LoggerFactory.getLogger(StudentController.class);
     @Autowired
-    StudentService studentService;
-    @RequestMapping(value = "/student", method = RequestMethod.GET)
-    public ResponseEntity<List<Student>> listAllStudent(){
-        List<Student> listStudent= studentService.findAll();
-        if(listStudent.isEmpty()) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<List<Student>>(listStudent, HttpStatus.OK);
+    private StudentRepository studentRepository;
+    @GetMapping("/students")
+    public List<Student> getStudents() {
+        return studentRepository.findAll();
     }
 
-    @RequestMapping(value = "/student/{id}", method = RequestMethod.GET)
-    public Student findStudent(@PathVariable("id") int id) {
-        Student student= studentService.findById(id);
-        if(student == null) {
-            ResponseEntity.notFound().build();
-        }
-        return student;
+    @GetMapping("/students/{id}")
+    public Student getStudent(@PathVariable Integer id) {
+        return studentRepository.findById(id).orElse(null);
     }
 
-    @RequestMapping(value = "/student/", method = RequestMethod.POST)
-    public Student saveStudent(@Valid @RequestBody Student student) {
-        return studentService.create(student);
+    @PostMapping("/students")
+    public Student createStudent(@Valid @RequestBody Student student) {
+        return studentRepository.save(student);
     }
 
-    @RequestMapping(value = "/student/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<Student> updateStudent(@PathVariable(value = "id") Integer studentId,
-                                                   @Valid @RequestBody Student studentForm) {
-        Student student = studentService.findById(studentId);
-        if(student == null) {
-            return ResponseEntity.notFound().build();
-        }
-        student.setId(studentForm.getId());
-        student.setName(studentForm.getName());
-        student.setPhone(studentForm.getPhone());
-        student.setEnrollments(studentForm.getEnrollments());
-        Student updatedStudent = studentService.create(student);
-        return ResponseEntity.ok(updatedStudent);
+
+    @PatchMapping("/students/{id}")
+    public Student updateStudent(@PathVariable Integer id, @Valid @RequestBody Student studentRequest) {
+        return studentRepository.findById(id).map(
+                student -> {
+                    student.setId(studentRequest.getId());
+                    student.setName(studentRequest.getName());
+                    student.setPhone(studentRequest.getPhone());
+//                    student.setEnrollments(studentRequest.getEnrollments());
+                    return studentRepository.save(student);
+                }
+        ).orElse(null);
     }
 
-    @RequestMapping(value = "/student/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Student> deleteStudent(@PathVariable(value = "id") Integer id) {
-        Student student = studentService.findById(id);
-        if(student == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        studentService.delete(id);
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/students/{id}")
+    public ResponseEntity<?> deleteStudent(@PathVariable Integer id) {
+        return studentRepository.findById(id).map(student -> {
+            studentRepository.delete(student);
+            return ResponseEntity.ok().build();
+        }).orElse(null);
     }
 
 }
