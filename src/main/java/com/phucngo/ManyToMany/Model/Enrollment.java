@@ -25,25 +25,25 @@ public class Enrollment implements Serializable {
     @Column(name = "start_date")
     private Date startDate;
 
-    @Column(name = "and_date")
-    private Date andDate;
+    @Column(name = "end_date")
+    private Date endDate;
 
     public Enrollment() {
     }
 
-    public Enrollment(Student student, Course course, Date startDate, Date andDate) {
+    public Enrollment(Student student, Course course, Date startDate, Date endDate) {
         this.student = student;
         this.course = course;
         this.startDate = startDate;
-        this.andDate = andDate;
+        this.endDate = endDate;
     }
 
-    public Date getAndDate() {
-        return andDate;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setAndDate(Date andDate) {
-        this.andDate = andDate;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public Long getId() {

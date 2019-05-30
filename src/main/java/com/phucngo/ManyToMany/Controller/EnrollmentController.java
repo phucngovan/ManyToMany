@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "")
+@CrossOrigin(origins = "*")
 @RestController
 public class EnrollmentController {
     @Autowired
@@ -20,11 +20,15 @@ public class EnrollmentController {
         return enrollmentRepository.findAll();
     }
 
+    @GetMapping("/enrollments/{id}")
+    public Enrollment getEnrollment(@PathVariable Integer id) {
+        return enrollmentRepository.findById(id).orElse(null);
+    }
+
     @PostMapping("/enrollments")
     public Enrollment createEnrollment(@Valid @RequestBody Enrollment enrollment) {
         return enrollmentRepository.save(enrollment);
     }
-
     @DeleteMapping("/enrollments/{enrollmentId}")
     public ResponseEntity<?> deleteEnrollment(@PathVariable Integer enrollmentId) {
         return enrollmentRepository.findById(enrollmentId).map(enrollment -> {
@@ -32,6 +36,16 @@ public class EnrollmentController {
             return ResponseEntity.ok().build();
         }).orElse(null);
     }
-
-
+    @PatchMapping("/enrollments/{id}")
+    public Enrollment updateEnrollment(@PathVariable Integer id, @Valid @RequestBody Enrollment enrollmentRequest) {
+        return enrollmentRepository.findById(id).map(
+                enrollment -> {
+                    enrollment.setStartDate(enrollmentRequest.getStartDate());
+                    enrollment.setEndDate(enrollmentRequest.getEndDate());
+                    enrollment.setStudent(enrollmentRequest.getStudent());
+                    enrollment.setCourse(enrollmentRequest.getCourse());
+                    return enrollmentRepository.save(enrollment);
+                }
+        ).orElse(null);
+    }
 }
