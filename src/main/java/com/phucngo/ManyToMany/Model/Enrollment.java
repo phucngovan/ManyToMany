@@ -28,6 +28,16 @@ public class Enrollment implements Serializable {
     @Column(name = "and_date")
     private Date andDate;
 
+    public Enrollment() {
+    }
+
+    public Enrollment(Student student, Course course, Date startDate, Date andDate) {
+        this.student = student;
+        this.course = course;
+        this.startDate = startDate;
+        this.andDate = andDate;
+    }
+
     public Date getAndDate() {
         return andDate;
     }
